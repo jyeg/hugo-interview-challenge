@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2020",
+    "baseUrl": ".",
+    "paths": {
+      "@api/*": ["./api/*"],
+      "@common/*": ["./common/*"],
+      "@client/*": ["./client/*"]
+    }
+  },
+  "include": ["api/**/*", "client/vite.config.ts", "common/**/*"],
+  "references": [{ "path": "./tsconfig.client.json" }]
+}
