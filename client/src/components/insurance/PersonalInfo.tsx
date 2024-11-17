@@ -1,10 +1,16 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@client/components/ui/form';
+import { Input } from '@client/components/ui/input';
 import { useFormContext } from 'react-hook-form';
-import { FormValues } from '@common/lib/validations';
+import { Application } from '@common/lib/types';
 
 export function PersonalInfoForm() {
-  const { control } = useFormContext<FormValues>();
+  const { control } = useFormContext<Application>();
 
   return (
     <div className="space-y-4">

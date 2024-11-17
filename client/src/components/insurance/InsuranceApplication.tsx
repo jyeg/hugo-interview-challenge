@@ -15,10 +15,11 @@ import { PersonalInfoForm } from './PersonalInfo';
 import { AddressForm } from './Address';
 import { VehicleForm } from './Vehicles';
 import { DependentForm } from './Dependents';
-import { formSchema, FormValues } from '@common/lib/validations';
+import { applicationSchema } from '@common/lib/schemas';
+import { Application } from '@common/lib/types';
 
 // Mock initial state (replace with actual data fetching in a real application)
-const initialState: FormValues = {
+const initialState: Application = {
   firstName: 'John',
   lastName: 'Doe',
   dateOfBirth: '1990-01-01',
@@ -34,16 +35,16 @@ const initialState: FormValues = {
   ],
 };
 
-export function InsuranceApplication({ initialData }: { initialData?: FormValues }) {
+export function InsuranceApplication({ initialData }: { initialData?: Application }) {
   const [quotePrice, setQuotePrice] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const methods = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const methods = useForm<Application>({
+    resolver: zodResolver(applicationSchema),
     defaultValues: initialData || initialState,
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: Application) => {
     console.log('data', data);
     // Simulate API call
     setTimeout(() => {

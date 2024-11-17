@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { InsuranceApplication } from '@client/components/insurance/InsuranceApplication';
-import { FormValues } from '@common/lib/validations';
+import { Application } from '@common/lib/types';
 
 // Mock API function
-const fetchApplicationData = async (id: string): Promise<FormValues> => {
+const fetchApplicationData = async (id: string): Promise<Application> => {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -28,7 +28,7 @@ const fetchApplicationData = async (id: string): Promise<FormValues> => {
 
 export function ApplicationPage() {
   const { applicationId } = useParams<{ applicationId: string }>();
-  const [applicationData, setApplicationData] = useState<FormValues | null>(null);
+  const [applicationData, setApplicationData] = useState<Application | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

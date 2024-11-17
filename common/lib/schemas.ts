@@ -37,7 +37,7 @@ export const personalInfoSchema = z.object({
   ),
 });
 
-export const formSchema = z.object({
+export const applicationSchema = z.object({
   ...personalInfoSchema.shape,
   address: addressSchema,
   vehicles: z
@@ -46,5 +46,3 @@ export const formSchema = z.object({
     .max(3, 'Maximum of 3 vehicles allowed'),
   additionalPeople: z.array(dependentSchema),
 });
-
-export type FormValues = z.infer<typeof formSchema>;
