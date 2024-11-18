@@ -11,20 +11,20 @@ The `client` is a basic Vite + React application.
 All dependencies are installed in the root of the project for simplicity. You can run both projects
 together with
 
-```
+```bash
 $> npm run start
 ```
 
 or individually with
 
-```
+```bash
 $> npm run start:api
 $> npm run start:client
 ```
 
 The API and client will both automatically reload on file changes to help speed up development.
 
-# Hugo Full Stack Challenge
+## Hugo Full Stack Challenge
 
 ## Scenario
 
@@ -43,13 +43,13 @@ Create a web API that exposes four endpoints:
    application
 2. `GET` route that can retrieve the current insurance application
 3. `PUT` route that will update the insurance application with provided data
-    - This should accept partial fields from the quote application. Each submitted field needs to
-      pass validation in order to be updated.
-    - The quote application as a whole may still be incomplete and should not cause this route to
-      fail.
+   - This should accept partial fields from the quote application. Each submitted field needs to
+     pass validation in order to be updated.
+   - The quote application as a whole may still be incomplete and should not cause this route to
+     fail.
 4. `POST` route that validates the entire application and returns a price
-    - You do not actually need to do any calculation here, returning a random number value would be
-      sufficient
+   - You do not actually need to do any calculation here, returning a random number value would be
+     sufficient
 
 ### Frontend
 
@@ -62,37 +62,37 @@ an error message if the application is not complete or the quoted price to purch
 
 The data that an insurance application needs consists of the following:
 
--   First and Last name
--   Date of Birth (validate that input is a date and at least 16 years old)
--   Address
-    -   Street
-    -   City
-    -   State
-    -   ZipCode (validate numeric, but don’t worry about validating if zip code exists)
--   Vehicle(s) (must have 1 vehicle, cannot have more than 3 total)
-    -   VIN
-    -   Year (validate numeric and valid year between 1985 and current year + 1)
-    -   Make and Model
+- First and Last name
+- Date of Birth (validate that input is a date and at least 16 years old)
+- Address
+  - Street
+  - City
+  - State
+  - ZipCode (validate numeric, but don’t worry about validating if zip code exists)
+- Vehicle(s) (must have 1 vehicle, cannot have more than 3 total)
+  - VIN
+  - Year (validate numeric and valid year between 1985 and current year + 1)
+  - Make and Model
 
 ## Guidelines
 
--   Provide setup instructions for the frontend and backend projects
--   The submission should be self-contained and ran locally. Please avoid connecting to external
-    services or databases.
-    -   Instructions/scripts to provision local databases should be included with the submission.
--   Feel free to use any starter kit/bootstrapping tools you feel comfortable with to create the
-    initial project (i.e. create-react-app, vite, etc for the front end) or use this one.
--   Don’t focus too much on the styling/UX of the frontend. Focus more on component
-    organization/structure
--   Backend can use any flavor of SQL for data storage.
-    -   Ensure that the frontend can resume the same application if the page is closed and reopened
+- Provide setup instructions for the frontend and backend projects
+- The submission should be self-contained and ran locally. Please avoid connecting to external
+  services or databases.
+  - Instructions/scripts to provision local databases should be included with the submission.
+- Feel free to use any starter kit/bootstrapping tools you feel comfortable with to create the
+  initial project (i.e. create-react-app, vite, etc for the front end) or use this one.
+- Don’t focus too much on the styling/UX of the frontend. Focus more on component
+  organization/structure
+- Backend can use any flavor of SQL for data storage.
+  - Ensure that the frontend can resume the same application if the page is closed and reopened
 
 ## Stretch Goals
 
 Implement the following if you have time or can plan to include within the time frame:
 
--   Use TypeScript with appropriate type definitions
--   Allow adding additional people to the insurance application:
-    -   First and Last name
-    -   Date of Birth
-    -   Relationship (Spouse, Sibling, Parent, Friend, Other)
+- Use TypeScript with appropriate type definitions
+- Allow adding additional people to the insurance application:
+  - First and Last name
+  - Date of Birth
+  - Relationship (Spouse, Sibling, Parent, Friend, Other)

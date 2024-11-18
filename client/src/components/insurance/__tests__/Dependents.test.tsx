@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DependentForm } from '../Dependents';
-import { applicationSchema } from '@common/lib/schemas';
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm({

@@ -9,6 +9,7 @@ export const addressSchema = z.object({
 });
 
 export const vehicleSchema = z.object({
+  id: z.number().optional().readonly(),
   vin: z.string().length(17, 'VIN must be exactly 17 characters'),
   year: z
     .number()
@@ -19,6 +20,7 @@ export const vehicleSchema = z.object({
 });
 
 export const dependentSchema = z.object({
+  id: z.number().optional().readonly(),
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   dateOfBirth: z.string(),
@@ -44,5 +46,7 @@ export const applicationSchema = z.object({
     .array(vehicleSchema)
     .min(1, 'At least one vehicle is required')
     .max(3, 'Maximum of 3 vehicles allowed'),
-  additionalPeople: z.array(dependentSchema),
+  additionalPeople: z.array(dependentSchema).optional(),
 });
+
+export type ApplicationDTO = z.infer<typeof applicationSchema>;
