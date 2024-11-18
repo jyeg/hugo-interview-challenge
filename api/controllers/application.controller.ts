@@ -8,7 +8,7 @@ import {
   WinstonLogger,
 } from '../utilities';
 import { applicationSchema } from '@common/lib/schemas';
-import { mapApplicationToEntity } from '@api/mappers/map-application-to-entity';
+import { mapApplicationDTOToEntity } from '@api/mappers/map-application-dto-to-entity';
 
 export class ApplicationController {
   private applicationService: ApplicationService;
@@ -24,7 +24,7 @@ export class ApplicationController {
    */
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const application = mapApplicationToEntity(req.body);
+      const application = mapApplicationDTOToEntity(req.body);
       const createdApplication = await this.applicationService.create(application);
       res.status(201).json(createdApplication);
     } catch (error: any) {
@@ -57,7 +57,7 @@ export class ApplicationController {
    */
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const application = mapApplicationToEntity(req.body);
+      const application = mapApplicationDTOToEntity(req.body);
       const updatedApplication = await this.applicationService.update(
         Number(req.params.id),
         application

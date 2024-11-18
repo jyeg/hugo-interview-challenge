@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@client/components/ui/button';
 import { Form } from '@client/components/ui/form';
 import {
@@ -18,44 +19,97 @@ import { DependentForm } from './Dependents';
 import { applicationSchema } from '@common/lib/schemas';
 import { Application } from '@common/lib/types';
 
-// Mock initial state (replace with actual data fetching in a real application)
-const initialState: Application = {
-  firstName: 'John',
-  lastName: 'Doe',
-  dateOfBirth: '1990-01-01',
-  address: {
-    street: '123 Main St',
-    city: 'Anytown',
-    state: 'CA',
-    zipCode: '12345',
-  },
-  vehicles: [{ vin: '1HGCM82633A004352', year: 2010, makeModel: 'Honda Accord' }],
-  additionalPeople: [
-    { firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1992-05-15', relationship: 'Spouse' },
-  ],
-};
+interface InsuranceApplicationProps {
+  initialData?: Application;
+  mode: 'create' | 'edit';
+  applicationId?: string;
+}
 
-export function InsuranceApplication({ initialData }: { initialData?: Application }) {
+export function InsuranceApplication({
+  initialData,
+  mode,
+  applicationId,
+}: InsuranceApplicationProps) {
+  const navigate = useNavigate();
   const [quotePrice, setQuotePrice] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const methods = useForm<Application>({
     resolver: zodResolver(applicationSchema),
-    defaultValues: initialData || initialState,
+    defaultValues: initialData || {
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      address: { street: '', city: '', state: '', zipCode: '' },
+      vehicles: [{ vin: '', year: undefined, makeModel: '' }],
+      additionalPeople: [],
+    },
   });
 
-  const onSubmit = (data: Application) => {
-    console.log('data', data);
-    // Simulate API call
-    setTimeout(() => {
-      if (Math.random() > 0.5) {
-        setQuotePrice(Math.floor(Math.random() * 1000) + 500);
-        setErrorMessage(null);
-      } else {
-        setErrorMessage('Unable to process your application at this time. Please try again later.');
-        setQuotePrice(null);
-      }
-    }, 1000);
+  const handleCreate = async (data: Application) => {
+    try {
+      const response = await fetch('http://localhost:8000/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Failed to create application');
+
+      const result = await response.json();
+      // Assuming the API returns an id field
+      navigate(`/${result.id}`);
+    } catch (error) {
+      setErrorMessage('Failed to create application. Please try again.');
+      console.error('Error creating application:', error);
+    }
+  };
+
+  const handleSave = async (data: Application) => {
+    if (!applicationId) return;
+    setIsSaving(true);
+    try {
+      const response = await fetch(`http://localhost:8000/applications/${applicationId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Failed to save application');
+
+      setErrorMessage(null);
+    } catch (error) {
+      setErrorMessage('Failed to save changes. Please try again.');
+      console.error('Error saving application:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSubmit = async (data: Application) => {
+    if (!applicationId) return;
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`http://localhost:8000/applications/${applicationId}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Failed to submit application');
+
+      const result = await response.json();
+      setQuotePrice(result.quote);
+      setErrorMessage(null);
+    } catch (error) {
+      setErrorMessage('Failed to submit application. Please try again.');
+      setQuotePrice(null);
+      console.error('Error submitting application:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -67,12 +121,33 @@ export function InsuranceApplication({ initialData }: { initialData?: Applicatio
       <CardContent>
         <FormProvider {...methods}>
           <Form {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              onSubmit={methods.handleSubmit(mode === 'create' ? handleCreate : handleSubmit)}
+              className="space-y-8"
+            >
               <PersonalInfoForm />
               <AddressForm />
               <VehicleForm />
               <DependentForm />
-              <Button type="submit">Submit Application</Button>
+              <div className="flex gap-4">
+                {mode === 'edit' && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={methods.handleSubmit(handleSave)}
+                    disabled={isSaving}
+                  >
+                    {isSaving ? 'Saving...' : 'Save Progress'}
+                  </Button>
+                )}
+                <Button type="submit" disabled={isSubmitting}>
+                  {mode === 'create'
+                    ? 'Create Application'
+                    : isSubmitting
+                      ? 'Submitting...'
+                      : 'Submit Application'}
+                </Button>
+              </div>
             </form>
           </Form>
         </FormProvider>

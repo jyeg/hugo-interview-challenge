@@ -1,7 +1,7 @@
 import { Application, PrismaClient } from '@prisma/client';
 import { Logger, WinstonLogger } from '../utilities';
-import { PartialApplicationWithRelatedEntities } from '@api/entities';
-import { mapApplicationToEntity } from '@api/mappers/map-application-to-entity';
+import { PartialApplicationWithRelatedEntities } from '@api/entities/types';
+import { mapEntityToApplicationDTO } from '@api/mappers/map-entity-to-application-dto';
 
 /**
  * This service is responsible for CRUD for an insurance application
@@ -17,7 +17,7 @@ export class ApplicationService {
 
   async create(data: PartialApplicationWithRelatedEntities) {
     // Create a new application in the database
-    return await this.prisma.application.create({
+    const createdApplication = await this.prisma.application.create({
       data: {
         ...data,
         vehicles: { create: data.vehicles },
@@ -25,19 +25,24 @@ export class ApplicationService {
       },
       include: { vehicles: true, dependents: true },
     });
+    return mapEntityToApplicationDTO(createdApplication);
   }
 
   async getById(id: number) {
     // Retrieve an application by ID
-    return await this.prisma.application.findUnique({
+    const application = await this.prisma.application.findUnique({
       where: { id },
       include: { vehicles: true, dependents: true },
     });
+    if (!application) {
+      return null;
+    }
+    return mapEntityToApplicationDTO(application);
   }
 
   async update(id: number, data: PartialApplicationWithRelatedEntities) {
     // Update an existing application
-    return await this.prisma.application.update({
+    const updatedApplication = await this.prisma.application.update({
       where: { id },
       data: {
         ...data,
@@ -58,5 +63,6 @@ export class ApplicationService {
       },
       include: { vehicles: true, dependents: true },
     });
+    return mapEntityToApplicationDTO(updatedApplication);
   }
 }

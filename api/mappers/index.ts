@@ -1,1 +1,1 @@
-export * from './map-application-to-entity';
+export * from './map-application-dto-to-entity';

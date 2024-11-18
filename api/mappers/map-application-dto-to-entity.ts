@@ -1,8 +1,8 @@
 import { ApplicationDTO, applicationSchema } from '../../common/lib/schemas'; // Import the application schema
-import { PartialApplicationWithRelatedEntities } from '@api/entities';
+import { PartialApplicationWithRelatedEntities } from '@api/entities/types';
 
 // Mapper function to convert input to Prisma entity
-export const mapApplicationToEntity = (
+export const mapApplicationDTOToEntity = (
   input: ApplicationDTO
 ): PartialApplicationWithRelatedEntities => {
   // Map the input to the Prisma entity structure

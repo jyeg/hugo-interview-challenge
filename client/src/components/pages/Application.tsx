@@ -3,33 +3,21 @@ import { useEffect, useState } from 'react';
 import { InsuranceApplication } from '@client/components/insurance/InsuranceApplication';
 import { Application } from '@common/lib/types';
 
-// Mock API function
 const fetchApplicationData = async (id: string): Promise<Application> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const response = await fetch(`http://localhost:8000/applications/${id}`);
 
-  // Mock data
-  return {
-    firstName: 'John',
-    lastName: 'Doe',
-    dateOfBirth: '1990-01-01',
-    address: {
-      street: '123 Main St',
-      city: 'Anytown',
-      state: 'CA',
-      zipCode: '12345',
-    },
-    vehicles: [{ vin: '1HGCM82633A004352', year: 2010, makeModel: 'Honda Accord' }],
-    additionalPeople: [
-      { firstName: 'Jane', lastName: 'Doe', dateOfBirth: '1992-05-15', relationship: 'Spouse' },
-    ],
-  };
+  if (!response.ok) {
+    throw new Error(`Error fetching application data: ${response.statusText}`);
+  }
+
+  return await response.json();
 };
 
 export function ApplicationPage() {
   const { applicationId } = useParams<{ applicationId: string }>();
   const [applicationData, setApplicationData] = useState<Application | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadApplicationData = async () => {
@@ -37,8 +25,10 @@ export function ApplicationPage() {
         try {
           const data = await fetchApplicationData(applicationId);
           setApplicationData(data);
+          setError(null);
         } catch (error) {
           console.error('Error fetching application data:', error);
+          setError('Failed to load application data');
         } finally {
           setLoading(false);
         }
@@ -52,9 +42,11 @@ export function ApplicationPage() {
     return <div>Loading application data...</div>;
   }
 
+  if (error) {
+    return <div className="text-red-600">{error}</div>;
+  }
+
   return applicationData ? (
-    <InsuranceApplication initialData={applicationData} />
-  ) : (
-    <div>Error: Unable to load application data</div>
-  );
+    <InsuranceApplication mode="edit" initialData={applicationData} applicationId={applicationId} />
+  ) : null;
 }

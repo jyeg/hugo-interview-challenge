@@ -2,7 +2,7 @@ import { NextFunction, Router, Request, Response } from 'express';
 
 import { ApplicationController } from '../controllers/application.controller';
 import { validateData } from '../middleware/validationMiddleware';
-import { applicationSchema } from '@common/lib/schemas';
+import { applicationSchema, partialApplicationSchema } from '@common/lib/schemas';
 import { ApplicationService } from '../services';
 
 const routes = Router();
@@ -12,7 +12,7 @@ const controller = new ApplicationController(applicationService);
 
 routes.post(
   '/',
-  validateData(applicationSchema),
+  validateData(partialApplicationSchema),
   (req: Request, res: Response, next: NextFunction) => controller.create(req, res, next)
 );
 

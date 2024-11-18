@@ -49,4 +49,7 @@ export const applicationSchema = z.object({
   additionalPeople: z.array(dependentSchema).optional(),
 });
 
+export const partialApplicationSchema = applicationSchema.deepPartial();
+export type PartialApplicationDTO = z.infer<typeof partialApplicationSchema>;
+
 export type ApplicationDTO = z.infer<typeof applicationSchema>;

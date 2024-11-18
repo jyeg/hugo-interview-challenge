@@ -1,5 +1,5 @@
 import { InsuranceApplication } from '@client/components/insurance/InsuranceApplication';
 
 export function HomePage() {
-  return <InsuranceApplication />;
+  return <InsuranceApplication mode="create" />;
 }

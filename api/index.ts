@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import routes from './routes';
 import helmet from 'helmet';
 import { invalidPathHandler, errorLogger, errorResponder, morganMiddleware } from './middleware';
@@ -8,7 +9,7 @@ const app = express();
 app.use(helmet());
 app.use(express.json());
 app.use(morganMiddleware);
-
+app.use(cors());
 app.use(routes);
 
 // error handling middlewares
