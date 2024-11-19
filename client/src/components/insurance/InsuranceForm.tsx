@@ -52,13 +52,13 @@ export function InsuranceForm({ initialData, mode, applicationId }: InsuranceApp
   } = useSubmitApplication(applicationId);
 
   const methods = useForm<Application>({
-    resolver: zodResolver(mode === 'create' ? partialApplicationSchema : applicationSchema),
+    resolver: zodResolver(applicationSchema),
     defaultValues: initialData || {
       firstName: undefined,
       lastName: undefined,
       dateOfBirth: undefined,
       address: { street: undefined, city: undefined, state: undefined, zipCode: undefined },
-      vehicles: [],
+      vehicles: [{ vin: undefined, year: 2024, makeModel: undefined }],
       additionalPeople: [],
     },
   });

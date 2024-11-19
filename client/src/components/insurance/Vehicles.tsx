@@ -65,9 +65,11 @@ export function VehicleForm() {
               </FormItem>
             )}
           />
-          <Button type="button" variant="destructive" onClick={() => remove(index)}>
-            Remove Vehicle
-          </Button>
+          {fields.length > 1 && (
+            <Button type="button" variant="destructive" onClick={() => remove(index)}>
+              Remove Vehicle
+            </Button>
+          )}
         </div>
       ))}
       {fields.length < 3 && (

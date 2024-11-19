@@ -1,98 +1,187 @@
-# This Repository
+# Hugo Take Home - Insurance Application
 
-This is a skeleton repository that you can use to complete the take home challenge. It provides some
-basic structure and tooling to get you started. You are welcome to use a different setup if you
-prefer.
+## Table of Contents
 
-The `api` is a basic Express application and uses Prisma for data access with a SQLite database.
+- [Description](#description)
+- [Tech & System Requirements](#tech--system-requirements)
+- [Features](#features)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Installation / Setup](#installation--setup)
+- [Running the project](#running-the-project)
+- [Design Considerations](#design-considerations)
+- [Assumptions](#assumptions)
+- [Trade-offs and TODOs](#trade-offs-and-todos)
 
-The `client` is a basic Vite + React application.
+## Description
 
-All dependencies are installed in the root of the project for simplicity. You can run both projects
-together with
+This project is a simple insurance application built with React, Typescript, and Shadcn/UI. It
+allows users to create, edit, and submit insurance applications.
+
+## Tech & System Requirements
+
+- Typescript
+- NodeJS
+- Express
+- Prisma
+- SQLLite
+- React
+- React Hook Form
+- React Router
+- Shadcn/UI
+- TailwindCSS
+
+## Features
+
+- Create, edit, and submit insurance applications
+- Add and remove vehicles from an application
+- Add and remove dependents from an application
+- Basic form validation
+- Toast notifications for user feedback
+- Loading states for requests
+
+## Usage
+
+1. Navigate to the home page to create a new insurance application.
+2. Fill out the personal information, address, vehicles, and dependents sections of the form.
+3. Click "Create Application" to save the application and be redirected to the edit page.
+4. On the edit page, you can update any of the form fields and click "Save Progress" to persist the
+   changes.
+5. Once the application is complete, click "Submit Application" to validate the entire form and
+   receive a quote.
+
+## Project Structure
+
+- `client/`: Contains the frontend React application
+  - `src/`
+    - `components/`: Reusable UI components
+      - `insurance/`: Insurance application specific components
+        - `InsuranceForm.tsx`: The main form component for creating and editing insurance
+          applications
+        - `PersonalInfo.tsx`: Form section for personal information
+        - `Address.tsx`: Form section for address
+        - `Vehicles.tsx`: Form section for vehicles
+        - `Dependents.tsx`: Form section for dependents
+    - `hooks/`: Custom React hooks
+      - `useApplicationMutation.ts`: Hooks for creating, saving, and submitting insurance
+        applications
+      - `use-toast.ts`: Hook for displaying toast notifications
+    - `lib/`: Shared TypeScript types and schemas
+  - `index.html`: The main HTML file
+  - `vite.config.ts`: Vite configuration file
+- `api/`: Contains the backend Express application
+  - `prisma/`: Prisma schema and migrations
+  - `routes/`: API route handlers
+  - `utilities/`: Shared utility functions
+  - `middleware/`: Express middlewares
+  - `controllers/`: API controllers
+  - `mappers/`: DTO to entity mappers
+  - `services/`: Business logic services
+  - `index.ts`: Express application entry point
+
+## Installation / Setup
+
+A step-by-step guide to setting up the project:
+
+1. Clone the repository: `git clone https://github.com/jyeg/hugo-take-home.git`
+2. Navigate to the project directory: `cd hugo-take-home`
+3. Install dependencies: `npm install`
+4. Copy `.env.example` file and create `.env` with your own values.
 
 ```bash
-$> npm run start
+cp .env.example .env
 ```
 
-or individually with
+## Running the project
+
+### Migrations
+
+To create a new migration:
 
 ```bash
-$> npm run start:api
-$> npm run start:client
+npm run migrate
 ```
 
-The API and client will both automatically reload on file changes to help speed up development.
+To run migrations:
 
-## Hugo Full Stack Challenge
+```bash
+npx prisma generate
+```
 
-## Scenario
+### Start the development server
 
-At Hugo, customers often start the insurance application process on an external third party site,
-where that third party site then sends the collected information to our service so that the user can
-continue their application process and receive a price quote.
+```bash
+npm run start
+```
 
-## Task
+### Run tests
 
-### Backend
+```bash
+npm run test
+```
 
-Create a web API that exposes four endpoints:
+## Design Considerations
 
-1. `POST` route that starts a new insurance application and initializes it with the provided data -
-   This route should return a “resume” route that points to the frontend URL to load the created
-   application
-2. `GET` route that can retrieve the current insurance application
-3. `PUT` route that will update the insurance application with provided data
-   - This should accept partial fields from the quote application. Each submitted field needs to
-     pass validation in order to be updated.
-   - The quote application as a whole may still be incomplete and should not cause this route to
-     fail.
-4. `POST` route that validates the entire application and returns a price
-   - You do not actually need to do any calculation here, returning a random number value would be
-     sufficient
+### Architecture
 
-### Frontend
+- Followed React modular architecture for clear separation of concerns
+- Used React Hook Form for form management
+- Used React Router for navigation
+- Used Shadcn/UI for styling
 
-Create a React frontend that can display the current application state, and can allow information to
-be added or edited. The frontend should do basic validation, and when all the required information
-is completely filled out, allow the application to be submitted for completion, and display either
-an error message if the application is not complete or the quoted price to purchase insurance.
+### Testing
 
-## Data Specifications
+- Comprehensive unit tests for components using jest and React Testing Library
 
-The data that an insurance application needs consists of the following:
+### API Design
 
-- First and Last name
-- Date of Birth (validate that input is a date and at least 16 years old)
-- Address
-  - Street
-  - City
-  - State
-  - ZipCode (validate numeric, but don’t worry about validating if zip code exists)
-- Vehicle(s) (must have 1 vehicle, cannot have more than 3 total)
-  - VIN
-  - Year (validate numeric and valid year between 1985 and current year + 1)
-  - Make and Model
+- RESTful endpoints following REST conventions
+  - `POST /applications`: Create a new insurance application
+  - `GET /applications/:id`: Retrieve an existing insurance application
+  - `PUT /applications/:id`: Update an existing insurance application
+  - `POST /applications/:id/submit`: Submit a completed insurance application and receive a quote
+- Consistent error handling and responses
+- Validation using common Zod schemas
 
-## Guidelines
+## Assumptions
 
-- Provide setup instructions for the frontend and backend projects
-- The submission should be self-contained and ran locally. Please avoid connecting to external
-  services or databases.
-  - Instructions/scripts to provision local databases should be included with the submission.
-- Feel free to use any starter kit/bootstrapping tools you feel comfortable with to create the
-  initial project (i.e. create-react-app, vite, etc for the front end) or use this one.
-- Don’t focus too much on the styling/UX of the frontend. Focus more on component
-  organization/structure
-- Backend can use any flavor of SQL for data storage.
-  - Ensure that the frontend can resume the same application if the page is closed and reopened
+1. **Data Model**
 
-## Stretch Goals
+   - Users have a first name, last name, date of birth, address, and vehicles
+   - Vehicles have a vin, year, make, and model
+   - Dependents have a first name, last name, and date of birth
 
-Implement the following if you have time or can plan to include within the time frame:
+2. **Authorization**
+   - No authorization required for this application
+   - CORS is enabled for the frontend development server
 
-- Use TypeScript with appropriate type definitions
-- Allow adding additional people to the insurance application:
-  - First and Last name
-  - Date of Birth
-  - Relationship (Spouse, Sibling, Parent, Friend, Other)
+## Trade-offs and TODOs
+
+1. **Performance vs Simplicity**
+
+   - Used Prisma for database operations but would normally use TypeORM and PostgreSQL for more
+     complex applications
+
+2. **Security vs Usability**
+
+   - No authorization required for this application, but would implement user authentication and
+     authorization in a real-world scenario
+
+3. **Development Speed vs Scalability**
+
+   - Focused on delivering features quickly, but would consider more scalable architecture for
+     larger applications
+   - TODO: Create page still requires a full form, if I had more time I would refactor to allow for
+     partial data to be saved.
+
+4. **Testing Coverage vs Time**
+
+   - TODO: Added some basic ui tests but couldnt get tests working, decided I would time box fixing
+     them.
+   - TODO: Would increase test coverage given more time, including integration tests and end-to-end
+     tests on api and server side.
+
+5. **Features vs Timeline**
+   - Implemented core CRUD functionality for insurance applications
+   - TODO: would fix the create page to allow for partial data to be saved, the api allows for this
+     but the ui does not.
