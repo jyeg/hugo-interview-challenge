@@ -76,7 +76,8 @@ export class ApplicationController {
    */
   async submit(req: Request, res: Response, next: NextFunction) {
     try {
-      await this.applicationService.update(Number(req.params.id), req.body);
+      const application = mapApplicationDTOToEntity(req.body);
+      await this.applicationService.update(Number(req.params.id), application);
       const quote = Math.floor(Math.random() * 1000);
       res.status(200).json({ quote });
     } catch (error: any) {

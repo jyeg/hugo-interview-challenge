@@ -1,13 +1,13 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import { HomePage } from '@client/components/pages/Home';
-import { ApplicationPage } from '@client/components/pages/Application';
+import { CreateApp } from '@client/components/pages/CreateApp';
+import { ExistingApp } from '@client/components/pages/ExistingApp';
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/:applicationId" element={<ApplicationPage />} />
+      <Route path="/" element={<CreateApp />} />
+      <Route path="/:applicationId" element={<ExistingApp />} />
     </Routes>
   );
 }

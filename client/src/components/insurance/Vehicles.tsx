@@ -65,18 +65,16 @@ export function VehicleForm() {
               </FormItem>
             )}
           />
-          {index > 0 && (
-            <Button type="button" variant="destructive" onClick={() => remove(index)}>
-              Remove Vehicle
-            </Button>
-          )}
+          <Button type="button" variant="destructive" onClick={() => remove(index)}>
+            Remove Vehicle
+          </Button>
         </div>
       ))}
       {fields.length < 3 && (
         <Button
           type="button"
           variant="outline"
-          onClick={() => append({ vin: '', year: undefined, makeModel: '' })}
+          onClick={() => append({ vin: '', year: 2024, makeModel: '' })}
         >
           Add Vehicle
         </Button>

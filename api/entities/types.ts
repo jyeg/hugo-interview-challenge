@@ -1,6 +1,7 @@
 import { Application, Vehicle, Dependent, Prisma } from '@prisma/client';
 
-type PartialApplication = Omit<Application, 'id' | 'createdAt' | 'updatedAt'>;
+type PartialApplication = Omit<Application, 'id' | 'createdAt' | 'updatedAt'> &
+  Partial<Pick<Application, 'id'>>;
 type PartialVehicle = Omit<Vehicle, 'id' | 'applicationId'> &
   Partial<Pick<Vehicle, 'id' | 'applicationId'>>;
 type PartialDependent = Omit<Dependent, 'id' | 'applicationId'> &

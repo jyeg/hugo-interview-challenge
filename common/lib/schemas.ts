@@ -28,6 +28,7 @@ export const dependentSchema = z.object({
 });
 
 export const personalInfoSchema = z.object({
+  id: z.number().optional().readonly(),
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   dateOfBirth: z.string().refine(

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { InsuranceApplication } from '../InsuranceApplication';
+import { InsuranceApplication } from '../InsuranceForm';
 
 describe('InsuranceApplication', () => {
   it('renders the form with all sections', () => {

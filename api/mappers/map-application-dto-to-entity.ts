@@ -9,7 +9,7 @@ export const mapApplicationDTOToEntity = (
   const applicationEntity = {
     firstName: input.firstName,
     lastName: input.lastName,
-    dateOfBirth: new Date(input.dateOfBirth),
+    dateOfBirth: input.dateOfBirth ? new Date(input.dateOfBirth) : null,
     street: input.address.street,
     city: input.address.city,
     state: input.address.state,

@@ -2,6 +2,7 @@ import { Application, PrismaClient } from '@prisma/client';
 import { Logger, WinstonLogger } from '../utilities';
 import { PartialApplicationWithRelatedEntities } from '@api/entities/types';
 import { mapEntityToApplicationDTO } from '@api/mappers/map-entity-to-application-dto';
+import { ApplicationDTO, PartialApplicationDTO } from '@common/lib/schemas';
 
 /**
  * This service is responsible for CRUD for an insurance application
@@ -28,7 +29,7 @@ export class ApplicationService {
     return mapEntityToApplicationDTO(createdApplication);
   }
 
-  async getById(id: number) {
+  async getById(id: number): Promise<PartialApplicationDTO | null> {
     // Retrieve an application by ID
     const application = await this.prisma.application.findUnique({
       where: { id },
@@ -40,7 +41,10 @@ export class ApplicationService {
     return mapEntityToApplicationDTO(application);
   }
 
-  async update(id: number, data: PartialApplicationWithRelatedEntities) {
+  async update(
+    id: number,
+    data: PartialApplicationWithRelatedEntities
+  ): Promise<PartialApplicationDTO> {
     // Update an existing application
     const updatedApplication = await this.prisma.application.update({
       where: { id },

@@ -23,7 +23,8 @@
     "paths": {
       "@client/*": ["./src/*"],
       "@common/*": ["../common/*"]
-    }
+    },
+    "types": ["jest", "@testing-library/jest-dom"]
   },
   "include": ["./client/src/**/*", "./common/**/*"],
   "exclude": ["node_modules", "dist"]
